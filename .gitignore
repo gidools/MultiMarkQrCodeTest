@@ -1,0 +1,6 @@
+Samples/.gradle/
+Samples/.idea/
+Samples/MaxstARSample/build/
+*.iml
+Samples/build/
+Samples/local.properties

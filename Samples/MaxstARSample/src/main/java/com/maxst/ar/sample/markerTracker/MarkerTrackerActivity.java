@@ -51,7 +51,7 @@ public class MarkerTrackerActivity extends ARActivity {
 		recognizedMarkerView = (TextView)findViewById(R.id.recognized_marker);
 		recognizedMarkerHandler = new RecognizedMarkerHandler(recognizedMarkerView);
 
-		TrackerManager.getInstance().addTrackerData("{\"marker\":\"scale\",\"all\":1}", true);
+		TrackerManager.getInstance().addTrackerData("{\"marker\":\"scale\",\"all\":0.15}", true);
 //		findViewById(R.id.normal_tracking).setOnClickListener(this);
 //		findViewById(R.id.enhanced_tracking).setOnClickListener(this);
 

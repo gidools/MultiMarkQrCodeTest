@@ -18,6 +18,7 @@ import com.maxst.ar.TrackerManager;
 import com.maxst.ar.TrackingResult;
 import com.maxst.ar.TrackingState;
 import com.maxst.ar.sample.arobject.BackgroundRenderHelper;
+import com.maxst.ar.sample.arobject.BaseRenderer;
 import com.maxst.ar.sample.arobject.TexturedQuadRenderer;
 import com.maxst.ar.sample.arobject.Yuv420spRenderer;
 
@@ -31,9 +32,10 @@ class MarkerTrackerRenderer implements Renderer {
 
 	public static final String TAG = MarkerTrackerRenderer.class.getSimpleName();
 
-	private TexturedQuadRenderer texturedQuadRenderer0;
+	private TexturedQuadRenderer texturedQuadRenderer;
 	private TexturedQuadRenderer texturedQuadRenderer1;
 	private TexturedQuadRenderer texturedQuadRenderer2;
+	private HashMap<String, TexturedQuadRenderer> rendererHashMap = new HashMap<>();
 
 	private int surfaceWidth;
 	private int surfaceHeight;
@@ -53,16 +55,74 @@ class MarkerTrackerRenderer implements Renderer {
 		backgroundCameraQuad = new Yuv420spRenderer();
 
 		Bitmap bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/sign_201_flammable_substance.jpg", activity.getAssets());
-		texturedQuadRenderer0 = new TexturedQuadRenderer();
-		texturedQuadRenderer0.setTextureBitmap(bitmap);
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("0", texturedQuadRenderer);
 
 		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/sign_207_high_voltage_warning.jpg", activity.getAssets());
-		texturedQuadRenderer1 = new TexturedQuadRenderer();
-		texturedQuadRenderer1.setTextureBitmap(bitmap);
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("1", texturedQuadRenderer);
 
 		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/sign_214_danger_place_warning.jpg", activity.getAssets());
-		texturedQuadRenderer2 = new TexturedQuadRenderer();
-		texturedQuadRenderer2.setTextureBitmap(bitmap);
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("2", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠1_관계자외출입금지.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(0.0f, -0.27f, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("3", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠2_고온주의.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(0.0f, -0.27f, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("4", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠3_감김끼임주의.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(0.0f, -0.27f, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("5", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠4_배관파손주의.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(-0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("6", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠5_발걸림주의.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(-0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("7", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠6_머리조심.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(-0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("8", texturedQuadRenderer);
+
+		bitmap = MaxstARUtil.getBitmapFromAsset("warning_icon/추가콘텐츠7_추락주의.JPG", activity.getAssets());
+		texturedQuadRenderer = new TexturedQuadRenderer();
+		texturedQuadRenderer.setTextureBitmap(bitmap);
+		texturedQuadRenderer.setTranslate(-0.27f, -0, -0);
+		texturedQuadRenderer.setScale(0.4f, 0.4f, 0.1f);
+		rendererHashMap.put("9", texturedQuadRenderer);
 
 		backgroundRenderHelper = new BackgroundRenderHelper();
 	}
@@ -95,30 +155,11 @@ class MarkerTrackerRenderer implements Renderer {
 
 			Log.d(TAG, "Marker name : " + trackable.getName() + ", id : " + trackable.getId());
 
-			switch (trackable.getId()) {
-				case "0":
-					texturedQuadRenderer0.setProjectionMatrix(projectionMatrix);
-					texturedQuadRenderer0.setTransform(trackable.getPoseMatrix());
-					texturedQuadRenderer0.setTranslate(0, 0, -0.05f);
-					texturedQuadRenderer0.setScale(1.0f, 1.0f, 0.1f);
-					texturedQuadRenderer0.draw();
-					break;
-
-				case "1":
-					texturedQuadRenderer1.setProjectionMatrix(projectionMatrix);
-					texturedQuadRenderer1.setTransform(trackable.getPoseMatrix());
-					texturedQuadRenderer1.setTranslate(0, 0, -0.05f);
-					texturedQuadRenderer1.setScale(1.0f, 1.0f, 0.1f);
-					texturedQuadRenderer1.draw();
-					break;
-
-				case "2":
-					texturedQuadRenderer2.setProjectionMatrix(projectionMatrix);
-					texturedQuadRenderer2.setTransform(trackable.getPoseMatrix());
-					texturedQuadRenderer2.setTranslate(0, 0, -0.05f);
-					texturedQuadRenderer2.setScale(1.0f, 1.0f, 0.1f);
-					texturedQuadRenderer2.draw();
-					break;
+			if (rendererHashMap.containsKey(trackable.getId())) {
+				BaseRenderer renderer = rendererHashMap.get(trackable.getId());
+				renderer.setProjectionMatrix(projectionMatrix);
+				renderer.setTransform(trackable.getPoseMatrix());
+				renderer.draw();
 			}
 		}
 	}
